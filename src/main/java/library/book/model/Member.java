@@ -1,11 +1,18 @@
 package library.book.model;
 
+import java.util.List;
+
+import com.fasterxml.jackson.annotation.JsonBackReference;
+
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import lombok.Getter;
 import lombok.Setter;
@@ -27,4 +34,11 @@ public class Member {
 
 	@Enumerated(EnumType.STRING)
 	private MemberStatus status;
+
+	/**
+	 * 회원과 대출은 1:N 관계
+	 */
+	@JsonBackReference
+	@OneToMany(mappedBy = "member", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+	private List<Lend> lends;
 }
